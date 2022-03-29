@@ -1,0 +1,45 @@
+{
+  "name": "aws-devtools",
+  "description": "scripts to be used with CDK or as in a standalone CLI mode",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "deploy:site:s3": "node devtools/s3-copy-to-website-bucket",
+    "deploy:server:ecs": "node devtools/update-ecs-service"
+  },
+  "devDependencies": {
+    "@aws-cdk/assert": "1.122.0",
+    "@aws-sdk/credential-provider-sso": "^3.56.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/jest": "^26.0.10",
+    "@types/lodash": "^4.14.178",
+    "@types/node": "10.17.27",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "aws-cdk": "^2.0.8",
+    "aws-cdk-lib": "^2.0.8",
+    "aws-sdk": "^2.1100.0",
+    "constructs": "^10.0.70",
+    "esbuild": "^0.9.3",
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "fs-extra": "^10.0.1",
+    "jest": "^26.4.2",
+    "lodash": "^4.17.21",
+    "prettier": "^2.5.1",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "~3.9.7"
+  },
+  "dependencies": {
+    "commander": "^9.1.0",
+    "eslint-plugin-import": "^2.25.4",
+    "ksuid": "^3.0.0",
+    "mime-types": "^2.1.35",
+    "source-map-support": "^0.5.19"
+  }
+}
