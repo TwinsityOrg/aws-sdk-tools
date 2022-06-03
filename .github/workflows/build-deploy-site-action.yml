@@ -1,0 +1,58 @@
+# https://docs.github.com/en/actions/advanced-guides/caching-dependencies-to-speed-up-workflows
+name: Build GitHub Action (S3 App Deployment)
+
+on:
+  push:
+    paths:
+      - '.github/actions/deploy-s3-site/**'
+      - '!.github/actions/deploy-s3-site/dist/**'
+
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+
+      - name: Cache npm
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+            src/**/node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: |
+          npm set-script prepare ""
+          npm ci --no-audit
+
+      - name: Build dist
+        run: |
+          cd .github/actions/deploy-s3-site
+          npx ncc build index.js -o dist
+      
+      - name: Commit and push update
+        run: |-
+          git config --global user.email "bot@fecher.it"
+          git config --global user.name "Action Builder Bot"
+          git add -A
+          git commit -m "Automatic build + push"
+          git push

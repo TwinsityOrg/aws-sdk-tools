@@ -36,10 +36,10 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
+    "@vercel/ncc": "^0.33.4",
     "commander": "^9.1.0",
-    "eslint-plugin-import": "^2.25.4",
     "ksuid": "^3.0.0",
     "mime-types": "^2.1.35",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.21"
   }
 }

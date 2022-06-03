@@ -1,0 +1,31 @@
+name: 'Upload Web App To S3 + CloudFront'
+description: 'Upload Site to S3 + CloudFront (optional)'
+inputs:
+  stage:
+    description: The semantical AWS Deployment stage, e.g. prod, beta, test
+    required: true
+  removeBucketFiles:
+    description: 'Should the existing bucket be emptied before updating?'
+    default: 'false'
+  app:
+    description: 'The SPA app name to be deployed'
+    required: true  
+  project:
+    description: 'The context of your app, which acts as a prefix for the AWS resources, e.g. project name'
+    required: true
+  fullDomain:
+    description: 'The full domain, where the app should be deployed at. Example: domain.com or sub.domain.com'
+    required: true  
+  buildPath:
+    description: 'The local path to the build/dist folder of your app. This folder will be copied to S3.'
+    required: true
+  version:
+    description: 'The version of the SPA app'
+    default: 'undefined'
+  versionMsg:
+    description: 'A description of what the version is applying/doing'
+    default: 'undefined'
+    
+runs:
+  using: 'node16'
+  main: './.github/actions/deploy-s3-site/dist/index.js'
