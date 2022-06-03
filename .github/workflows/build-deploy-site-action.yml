@@ -46,7 +46,7 @@ jobs:
 
       - name: Build dist
         run: |
-          cd .github/actions/deploy-s3-site
+          cd actions/deploy-s3-site
           npx ncc build index.js -o dist
       
       - name: Commit and push update
