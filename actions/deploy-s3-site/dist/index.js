@@ -17271,6 +17271,46 @@ module.exports = eval("require")("@actions/core");
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/node module decorator */
 /******/ 	(() => {
 /******/ 		__nccwpck_require__.nmd = (module) => {
@@ -17286,22 +17326,30 @@ module.exports = eval("require")("@actions/core");
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony import */ var _src_modules_copy_spa_to_S3__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(556);
+/* harmony import */ var _src_modules_copy_spa_to_S3__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_src_modules_copy_spa_to_S3__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(328);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(18);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { copyBuildFolderToS3 } = __nccwpck_require__(556);
-const core = __nccwpck_require__(328);
-const _ = __nccwpck_require__(18);
+
+
+
 
 const main = async () => {
-  const stage = _.lowerCase(core.getInput('stage', { required: true }));
-  const project = _.lowerCase(core.getInput('project', { required: true }));
-  const app = _.lowerCase(core.getInput('app', { required: true }));
-  const buildPath = core.getInput('buildPath', { required: true });
-  const fullDomain = core.getInput('fullDomain', { required: true });
-  const removeBucketFiles = core.getInput('removeBucketFiles');
-  const version = core.getInput('version');
-  const versionMsg = core.getInput('versionMsg');
+  const stage = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.lowerCase)((0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('stage', { required: true }));
+  const project = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.lowerCase)((0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('project', { required: true }));
+  const app = (0,lodash__WEBPACK_IMPORTED_MODULE_2__.lowerCase)((0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('app', { required: true }));
+  const buildPath = (0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('buildPath', { required: true });
+  const fullDomain = (0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('fullDomain', { required: true });
+  const removeBucketFiles = (0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('removeBucketFiles');
+  const version = (0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('version');
+  const versionMsg = (0,_actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput)('versionMsg');
 
   const bucketName = `${project}-${app}-${stage}`;
 
@@ -17314,7 +17362,7 @@ const main = async () => {
     versionMsg,
   };
   console.log('using the following options: ', options);
-  await copyBuildFolderToS3(options);
+  await (0,_src_modules_copy_spa_to_S3__WEBPACK_IMPORTED_MODULE_0__.copyBuildFolderToS3)(options);
 };
 
 main();
