@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { copyBuildFolderToS3 } from '../../src/modules/copy-spa-to-S3';
 import core from '@actions/core';
 import _ from 'lodash';
+import { copyBuildFolderToS3 } from '../../src/modules/copy-spa-to-S3';
 
 const main = async () => {
   const stage = _.lowerCase(core.getInput('stage', { required: true }));
@@ -10,7 +10,7 @@ const main = async () => {
   const app = _.lowerCase(core.getInput('app', { required: true }));
   const buildPath = core.getInput('buildPath', { required: true });
   const fullDomain = core.getInput('fullDomain', { required: true });
-  const removeBucketFiles = core.getInput('removeBucketFiles');
+  const removeBucketFiles = core.getBooleanInput('removeBucketFiles');
   const version = core.getInput('version');
   const versionMsg = core.getInput('versionMsg');
 
@@ -18,13 +18,13 @@ const main = async () => {
 
   const options = {
     bucketName,
-    buildPath,
+    buildDir: buildPath,
     removeBucketFiles,
     host: fullDomain,
     version,
     versionMsg,
   };
-  console.log('using the following options: ', options);
+  core.info(`${options}`);
   await copyBuildFolderToS3(options);
 };
 

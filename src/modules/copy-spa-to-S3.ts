@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { S3, CloudFront } from 'aws-sdk';
 import { fromSSO } from '@aws-sdk/credential-provider-sso';
+import { CloudFront, S3 } from 'aws-sdk';
 import fs from 'fs';
-import path from 'path';
 import KSUID from 'ksuid';
-import { exit } from 'process';
 import mime from 'mime-types';
+import path from 'path';
+import { exit } from 'process';
 
 let filePaths = [];
 const getFilePaths = (dir) => {
@@ -141,6 +141,14 @@ export const copyBuildFolderToS3 = async ({
   host,
   version = 'undefined',
   versionMsg = 'undefined',
+}: {
+  bucketName: string;
+  buildDir: string;
+  profile?: string;
+  removeBucketFiles: boolean;
+  host: string;
+  version: string;
+  versionMsg: string;
 }) => {
   console.log(`bucketName: ${bucketName}`);
   console.log(`local build folder: ${buildDir}`);
