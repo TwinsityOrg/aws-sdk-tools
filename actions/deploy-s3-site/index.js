@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { copyBuildFolderToS3 } = require('../../../src/modules/copy-spa-to-S3');
-const core = require('@actions/core');
-const _ = require('lodash');
+import { copyBuildFolderToS3 } from '../../../src/modules/copy-spa-to-S3';
+import { getInput } from '@actions/core';
+import { lowerCase } from 'lodash';
 
 const main = async () => {
-  const stage = _.lowerCase(core.getInput('stage', { required: true }));
-  const project = _.lowerCase(core.getInput('project', { required: true }));
-  const app = _.lowerCase(core.getInput('app', { required: true }));
-  const buildPath = core.getInput('buildPath', { required: true });
-  const fullDomain = core.getInput('fullDomain', { required: true });
-  const removeBucketFiles = core.getInput('removeBucketFiles');
-  const version = core.getInput('version');
-  const versionMsg = core.getInput('versionMsg');
+  const stage = lowerCase(getInput('stage', { required: true }));
+  const project = lowerCase(getInput('project', { required: true }));
+  const app = lowerCase(getInput('app', { required: true }));
+  const buildPath = getInput('buildPath', { required: true });
+  const fullDomain = getInput('fullDomain', { required: true });
+  const removeBucketFiles = getInput('removeBucketFiles');
+  const version = getInput('version');
+  const versionMsg = getInput('versionMsg');
 
   const bucketName = `${project}-${app}-${stage}`;
 

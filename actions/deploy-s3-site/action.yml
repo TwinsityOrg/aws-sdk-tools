@@ -28,4 +28,4 @@ inputs:
     
 runs:
   using: 'node16'
-  main: 'actions/deploy-s3-site/dist/index.js'
+  main: 'dist/index.js'

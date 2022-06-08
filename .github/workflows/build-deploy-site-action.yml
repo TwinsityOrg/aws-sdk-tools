@@ -4,8 +4,8 @@ name: Build GitHub Action (S3 App Deployment)
 on:
   push:
     paths:
-      - '.github/actions/deploy-s3-site/**'
-      - '!.github/actions/deploy-s3-site/dist/**'
+      - 'actions/deploy-s3-site/**'
+      - '!actions/deploy-s3-site/dist/**'
 
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
