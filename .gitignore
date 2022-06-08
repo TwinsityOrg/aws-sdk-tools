@@ -113,3 +113,7 @@ node_modules
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+*.d.ts
+node_modules
+.parcel-cache/
