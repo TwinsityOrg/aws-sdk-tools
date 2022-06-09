@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { fromSSO } from '@aws-sdk/credential-provider-sso';
 import { CloudFront, S3 } from 'aws-sdk';
-import fs from 'fs';
-import KSUID from 'ksuid';
-import mime from 'mime-types';
-import path from 'path';
+import * as fs from 'fs';
+const KSUID = require('ksuid');
+import * as mime from 'mime-types';
+import * as path from 'path';
 import { exit } from 'process';
 
 let filePaths = [];

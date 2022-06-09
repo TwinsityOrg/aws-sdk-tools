@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-var-requires */
-import core from '@actions/core';
-import _ from 'lodash';
+import * as core from '@actions/core';
+import * as _ from 'lodash';
 import { copyBuildFolderToS3 } from '../../src/modules/copy-spa-to-S3';
 
 const main = async () => {
