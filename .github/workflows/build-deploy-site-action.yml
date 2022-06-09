@@ -46,7 +46,8 @@ jobs:
 
       - name: Build dist
         run: |
-          npm run build:site:s3
+          npm run build:site:s3:ncc
+          
       - name: Commit and push update
         run: |-
           git config --global user.email "bot@fecher.it"

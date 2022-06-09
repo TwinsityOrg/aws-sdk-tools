@@ -4,7 +4,7 @@ import * as core from '@actions/core';
 import * as _ from 'lodash';
 import { copyBuildFolderToS3 } from '../../src/modules/copy-spa-to-S3';
 
-const main = async () => {
+const main = async (): Promise<void> => {
   const stage = _.lowerCase(core.getInput('stage', { required: true }));
   const project = _.lowerCase(core.getInput('project', { required: true }));
   const app = _.lowerCase(core.getInput('app', { required: true }));
