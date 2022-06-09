@@ -6,7 +6,8 @@
     "deploy:site:s3": "node devtools/s3-copy-to-website-bucket",
     "deploy:server:ecs": "node devtools/update-ecs-service",
     "build:site:s3": "rimraf actions/deploy-s3-site/dist && parcel build ./actions/deploy-s3-site/index.ts --dist-dir actions/deploy-s3-site/dist --no-autoinstall --target default --no-source-maps",
-    "build:site:s3:ncc": "rimraf actions/deploy-s3-site/dist && ncc build actions/deploy-s3-site/index.ts -o actions/deploy-s3-site/dist -a --target es2019 -s"
+    "build:site:s3:ncc": "rimraf actions/deploy-s3-site/dist && ncc build actions/deploy-s3-site/index.ts -o actions/deploy-s3-site/dist -a --target es2019 -s",
+    "prepare": ""
   },
   "targets": {
     "default": {
