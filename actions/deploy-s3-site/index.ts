@@ -5,9 +5,9 @@ import * as _ from 'lodash';
 import { copyBuildFolderToS3 } from '../../src/modules/copy-spa-to-S3';
 
 const main = async (): Promise<void> => {
-  const stage = _.lowerCase(core.getInput('stage', { required: true }));
-  const project = _.lowerCase(core.getInput('project', { required: true }));
-  const app = _.lowerCase(core.getInput('app', { required: true }));
+  const stage = _.camelCase(core.getInput('stage', { required: true }));
+  const project = _.camelCase(core.getInput('project', { required: true }));
+  const app = _.camelCase(core.getInput('app', { required: true }));
   const buildPath = core.getInput('buildPath', { required: true });
   const fullDomain = core.getInput('fullDomain', { required: true });
   const removeBucketFiles = core.getBooleanInput('removeBucketFiles');
