@@ -1,0 +1,15 @@
+name: "Image Update of an ECS Service"
+description: "Updates an existing ECS Service with a new image"
+inputs:
+  image:
+    required: true
+  family:
+    required: true
+  cluster:
+    required: true
+  service:
+    required: true
+
+runs:
+  using: "node16"
+  main: "dist/index.js"

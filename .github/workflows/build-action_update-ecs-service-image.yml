@@ -1,12 +1,11 @@
 # https://docs.github.com/en/actions/advanced-guides/caching-dependencies-to-speed-up-workflows
-name: Build GitHub Action (S3 App Deployment)
+name: Build GitHub Action (ECS Service Image Update)
 
 on:
   push:
     paths:
-      - 'actions/deploy-s3-site/**'
-      - '!actions/deploy-s3-site/dist/**'
-
+      - "actions/update-ecs-server-image/**"
+      - "!actions/update-ecs-server-image/dist/**"
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -46,8 +45,8 @@ jobs:
 
       - name: Build dist
         run: |
-          npm run build:site:s3:ncc
-          
+          npm run build:serviceimage:ecs:ncc
+
       - name: Commit and push update
         run: |-
           git config --global user.email "bot@fecher.it"
