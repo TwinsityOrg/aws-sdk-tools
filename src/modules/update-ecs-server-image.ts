@@ -1,13 +1,23 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { ECS } = require('aws-sdk');
-const { fromSSO } = require('@aws-sdk/credential-provider-sso');
+import { fromSSO } from '@aws-sdk/credential-provider-sso';
+import { ECS } from 'aws-sdk';
 
-export const updateEcsServiceImage = async (options) => {
-  const { profile, service, region, cluster, image, family } = options;
+export interface UpdateEcsServiceImageOptions {
+  profile?: string;
+  service: string;
+  region?: string;
+  cluster: string;
+  image: string;
+  family: string;
+  version?: string;
+  versionMsg?: string;
+}
+export const updateEcsServiceImage = async (options: UpdateEcsServiceImageOptions) => {
+  const { profile, service, region, cluster, image, family, version, versionMsg } = options;
 
-  let ecs;
+  let ecs: ECS;
   if (profile) {
     console.log(`using SSO profile: ${profile}`);
     const credentials = await fromSSO({ profile: profile })();
@@ -43,22 +53,23 @@ export const updateEcsServiceImage = async (options) => {
     throw new Error(`No existing task definiton found, matching ${family} ... please deploy infrastructure first!`);
   }
   const { taskDefinition } = taskDefResponse;
-  taskDefinition.containerDefinitions[0].image = image;
-
-  const {
-    taskDefinitionArn,
-    revision,
-    status,
-    requiresAttributes,
-    compatibilities,
-    registeredAt,
-    registeredBy,
-    ...taskDefParams
-  } = taskDefinition;
+  const oldTaskDefinition = taskDefinition.containerDefinitions[0];
+  oldTaskDefinition.image = image;
 
   const newTaskDefinitionResponse = await ecs
     .registerTaskDefinition({
-      ...taskDefParams,
+      containerDefinitions: [oldTaskDefinition],
+      family,
+      tags: [
+        {
+          key: 'version',
+          value: version,
+        },
+        {
+          key: 'versionMsg',
+          value: versionMsg,
+        },
+      ],
     })
     .promise();
   if (!newTaskDefinitionResponse.taskDefinition) {
@@ -75,6 +86,8 @@ export const updateEcsServiceImage = async (options) => {
       forceNewDeployment: true,
       service,
       cluster,
+      propagateTags: 'TASK_DEFINITION',
+      enableECSManagedTags: true,
     })
     .promise();
   console.log(`ECS update triggered`, ecsUpdateResponse.service);

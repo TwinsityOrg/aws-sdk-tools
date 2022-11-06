@@ -9,6 +9,8 @@ const main = async (): Promise<void> => {
   const family = core.getInput('family', { required: true });
   const image = core.getInput('image', { required: true });
   const cluster = core.getInput('cluster', { required: true });
+  const version = core.getInput('version');
+  const versionMsg = core.getInput('versionMsg');
 
   const options = {
     service,
