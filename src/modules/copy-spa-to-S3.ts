@@ -30,7 +30,7 @@ const updateExistingTags = (existingTags, newTags) => {
 const uploadToS3 = async (dir, localpath, s3, bucketName) => {
   dir = path.normalize(dir);
   const osSpecificFilePath = localpath.split(`${dir}${path.sep}`)[1];
-  console.log(`Uploading:\t${osSpecificFilePath}`);
+  // console.log(`Uploading:\t${osSpecificFilePath}`);
 
   let cacheControl;
   if (osSpecificFilePath.endsWith('html')) {
@@ -46,7 +46,7 @@ const uploadToS3 = async (dir, localpath, s3, bucketName) => {
   // in case of windows separators
   const key = osSpecificFilePath.replace(/\\/g, '/');
 
-  console.log(`key: ${key}, contentType: ${contentType}`);
+  //console.log(`key: ${key}, contentType: ${contentType}`);
   return s3
     .putObject({
       Bucket: bucketName,
@@ -153,6 +153,8 @@ export const copyBuildFolderToS3 = async ({
   console.log(`bucketName: ${bucketName}`);
   console.log(`local build folder: ${buildDir}`);
   console.log(`using version for tags: ${version}`);
+  console.log(`using versionMsg for tags: ${versionMsg}`);
+  console.log(`using host: ${host}`);
 
   try {
     let s3;
@@ -213,6 +215,7 @@ export const copyBuildFolderToS3 = async ({
     // TODO: watch out mr. pagination! shouldn't occur right now
     for (let existingDistro of DistributionList.Items) {
       console.log(`existingDistro: ${existingDistro.Id}`);
+      console.dir(existingDistro);
       // see https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cloudfront/modules/distributionsummary.html
       if (existingDistro.Aliases.Items.includes(host)) {
         console.log(`found domain ${host} in cloudFront distro: ${JSON.stringify(existingDistro)}`);

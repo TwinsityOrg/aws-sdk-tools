@@ -24,7 +24,7 @@ const main = async (): Promise<void> => {
     version,
     versionMsg,
   };
-  core.info(`${options}`);
+  console.dir(options);
   await copyBuildFolderToS3(options);
 };
 
