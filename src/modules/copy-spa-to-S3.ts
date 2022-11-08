@@ -215,10 +215,9 @@ export const copyBuildFolderToS3 = async ({
     // TODO: watch out mr. pagination! shouldn't occur right now
     for (let existingDistro of DistributionList.Items) {
       console.log(`existingDistro: ${existingDistro.Id}`);
-      console.dir(existingDistro);
       // see https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-cloudfront/modules/distributionsummary.html
       if (existingDistro.Aliases.Items.includes(host)) {
-        console.log(`found domain ${host} in cloudFront distro: ${JSON.stringify(existingDistro)}`);
+        console.log(`found domain ${host} in cloudFront distros`);
         const paths = ['/*'];
         matchingCfDistro = await cf
           .createInvalidation({

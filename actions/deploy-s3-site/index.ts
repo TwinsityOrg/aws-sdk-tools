@@ -5,16 +5,21 @@ import * as _ from 'lodash';
 import { copyBuildFolderToS3 } from '../../src/modules/copy-spa-to-S3';
 
 const main = async (): Promise<void> => {
-  const stage = _.camelCase(core.getInput('stage', { required: true }));
+  const stage = core.getInput('stage', { required: true });
   const project = _.camelCase(core.getInput('project', { required: true }));
   const app = _.camelCase(core.getInput('app', { required: true }));
   const buildPath = core.getInput('buildPath', { required: true });
-  const fullDomain = core.getInput('fullDomain', { required: true });
+  const apexDomain = core.getInput('apexDomain', { required: true });
+  const appSubDomain = core.getInput('appSubDomain');
   const removeBucketFiles = core.getBooleanInput('removeBucketFiles');
   const version = core.getInput('version');
   const versionMsg = core.getInput('versionMsg');
 
-  const bucketName = `${project}-${app}-${stage}`;
+  const bucketName = `${project}-${app}-${_.camelCase(stage)}`;
+  const stageSubDomain = stage;
+  const fullDomain = appSubDomain
+    ? `${appSubDomain}.${stageSubDomain}.${apexDomain}`
+    : `${stageSubDomain}.${apexDomain}`;
 
   const options = {
     bucketName,

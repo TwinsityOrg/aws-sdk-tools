@@ -1,31 +1,34 @@
-name: 'Upload Web App To S3 + CloudFront'
-description: 'Upload Site to S3 + CloudFront (optional)'
+name: "Upload Web App To S3 + CloudFront"
+description: "Upload Site to S3 + CloudFront (optional)"
 inputs:
   stage:
     description: The semantical AWS Deployment stage, e.g. prod, beta, test
     required: true
   removeBucketFiles:
-    description: 'Should the existing bucket be emptied before updating?'
-    default: 'false'
+    description: "Should the existing bucket be emptied before updating?"
+    default: "false"
   app:
-    description: 'The SPA app name to be deployed'
-    required: true  
-  project:
-    description: 'The context of your app, which acts as a prefix for the AWS resources, e.g. project name'
+    description: "The SPA app name to be deployed"
     required: true
-  fullDomain:
-    description: 'The full domain, where the app should be deployed at. Example: domain.com or sub.domain.com'
-    required: true  
+  project:
+    description: "The context of your app, which acts as a prefix for the AWS resources, e.g. project name"
+    required: true
+  apexDomain:
+    description: "The naked/root domain with ending, where the app should be deployed at. Example: domain.com"
+    required: true
+  appSubDomain:
+    description: "The subdomain part, where the app should be deployed at WITHOUT the root domain. Example: vehicles"
+    default: ""
   buildPath:
-    description: 'The local path to the build/dist folder of your app. This folder will be copied to S3.'
+    description: "The local path to the build/dist folder of your app. This folder will be copied to S3."
     required: true
   version:
-    description: 'The version of the SPA app'
-    default: 'undefined'
+    description: "The version of the SPA app"
+    default: "undefined"
   versionMsg:
-    description: 'A description of what the version is applying/doing'
-    default: 'undefined'
-    
+    description: "A description of what the version is applying/doing"
+    default: "undefined"
+
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
