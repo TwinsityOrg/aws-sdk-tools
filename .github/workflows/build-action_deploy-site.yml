@@ -4,8 +4,8 @@ name: Build GitHub Action (S3 App Deployment)
 on:
   push:
     paths:
-      - "actions/deploy-s3-site/**"
-      - "!actions/deploy-s3-site/dist/**"
+      - 'actions/deploy-s3-site/**'
+      - '!actions/deploy-s3-site/dist/**'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -40,7 +40,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: |
-          npm set-script prepare ""
+          npm pkg delete scripts.prepare
           npm ci --no-audit
 
       - name: Build dist
@@ -51,6 +51,7 @@ jobs:
         run: |-
           git config --global user.email "bot@fecher.it"
           git config --global user.name "Action Builder Bot"
+          git pull
           git add -A
           git commit -m "Automatic build + push"
-          git push
+          git push -f

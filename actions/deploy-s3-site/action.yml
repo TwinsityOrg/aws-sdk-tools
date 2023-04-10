@@ -22,12 +22,8 @@ inputs:
   buildPath:
     description: "The local path to the build/dist folder of your app. This folder will be copied to S3."
     required: true
-  version:
-    description: "The version of the SPA app"
-    default: "undefined"
-  versionMsg:
-    description: "A description of what the version is applying/doing"
-    default: "undefined"
+  tagsFileLocation:
+    description: "The location of the tags, which should be updated or set"
 
 runs:
   using: "node16"

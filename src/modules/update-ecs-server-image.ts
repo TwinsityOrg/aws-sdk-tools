@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { fromSSO } from '@aws-sdk/credential-provider-sso';
 import { ECS } from 'aws-sdk';
+import * as fs from 'fs';
 
 export interface UpdateEcsServiceImageOptions {
   profile?: string;
@@ -11,11 +12,21 @@ export interface UpdateEcsServiceImageOptions {
   cluster: string;
   image: string;
   family: string;
-  version?: string;
-  versionMsg?: string;
+  tagsFileLocation?: string;
 }
 export const updateEcsServiceImage = async (options: UpdateEcsServiceImageOptions) => {
-  const { profile, service, region, cluster, image, family, version, versionMsg } = options;
+  const { profile, service, region, cluster, image, family, tagsFileLocation } = options;
+
+  let newTags;
+  if (tagsFileLocation) {
+    const tags = JSON.parse(fs.readFileSync(tagsFileLocation).toString('utf-8'));
+    newTags = Object.entries(tags).map(([k, v]) => {
+      // the value has to be a string
+      return { Key: k, Value: `${v}` };
+    });
+    console.log('newTags');
+    console.dir(newTags);
+  }
 
   let ecs: ECS;
   if (profile) {
@@ -60,16 +71,7 @@ export const updateEcsServiceImage = async (options: UpdateEcsServiceImageOption
     .registerTaskDefinition({
       containerDefinitions: [oldTaskDefinition],
       family,
-      tags: [
-        {
-          key: 'version',
-          value: version,
-        },
-        {
-          key: 'versionMsg',
-          value: versionMsg,
-        },
-      ],
+      tags: newTags,
     })
     .promise();
   if (!newTaskDefinitionResponse.taskDefinition) {
@@ -100,4 +102,23 @@ export const updateEcsServiceImage = async (options: UpdateEcsServiceImageOption
 
   const oldTaskDefinitionStatus = oldTaskDefDeregistrationResponse.taskDefinition.status;
   console.log(`Deregistered old task Definition ${oldTaskDefArn}, updated status: ${oldTaskDefinitionStatus}`);
+};
+
+const updateExistingTags = (existingTags, newTags) => {
+  const mergedObj = {};
+
+  existingTags.forEach((existingObj) => {
+    mergedObj[existingObj.Key] = existingObj.Value;
+  });
+
+  newTags.forEach((newTag) => {
+    mergedObj[newTag.Key] = newTag.Value;
+  });
+
+  const mergedTags = Object.entries(mergedObj).map(([key, value]) => ({
+    Key: key,
+    Value: `${value}`,
+  }));
+
+  return mergedTags;
 };

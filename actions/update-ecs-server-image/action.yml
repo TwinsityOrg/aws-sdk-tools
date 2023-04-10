@@ -2,17 +2,19 @@ name: "Image Update of an ECS Service"
 description: "Updates an existing ECS Service with a new image"
 inputs:
   image:
+    description: the URL of the image to be used for the ECS Service
     required: true
   family:
+    description: the family of the ECS Service
     required: true
   cluster:
+    description: the cluster, where the new version of the service should be deployed to
     required: true
   service:
+    description: the service name of the ECS service
     required: true
-  version:
-    required: false
-  versionMsg:
-    required: false
+  tagsFileLocation:
+    description: "The location of the tags, which should be updated or set"
 runs:
   using: "node16"
   main: "dist/index.js"

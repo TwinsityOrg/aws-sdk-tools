@@ -14,6 +14,10 @@ const main = async () => {
     .requiredOption('-i, --image <image>', 'the image to be used in the ECS cluster')
     .requiredOption('-f, --family <family>', 'the name for the ECS task definition family')
     .option('-r, --region <region>', 'the region to deploy to', defaultRegion)
+    .option(
+      '-t, --tagsLocation <version>',
+      'the location to the tags file to be set or updated. Format of the JSON: [{Key: string, Value: string},...]'
+    )
     .option('-p, --profile <profileName>', 'the AWS SSO profile to be used');
   program.parse();
   const options = program.opts();

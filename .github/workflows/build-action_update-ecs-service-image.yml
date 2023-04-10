@@ -4,8 +4,8 @@ name: Build GitHub Action (ECS Service Image Update)
 on:
   push:
     paths:
-      - "actions/update-ecs-server-image/**"
-      - "!actions/update-ecs-server-image/dist/**"
+      - 'actions/update-ecs-server-image/**'
+      - '!actions/update-ecs-server-image/dist/**'
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -40,7 +40,7 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: |
-          npm set-script prepare ""
+          npm pkg delete scripts.prepare
           npm ci --no-audit
 
       - name: Build dist
@@ -53,4 +53,4 @@ jobs:
           git config --global user.name "Action Builder Bot"
           git add -A
           git commit -m "Automatic build + push"
-          git push
+          git push -f

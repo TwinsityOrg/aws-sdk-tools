@@ -22,9 +22,22 @@ const getFilePaths = (dir) => {
 };
 
 const updateExistingTags = (existingTags, newTags) => {
-  const tagSet = existingTags.filter((tag) => tag.Key != 'app_version' && tag.Key != 'app_version_msg');
-  tagSet.push(...newTags);
-  return tagSet;
+  const mergedObj = {};
+
+  existingTags.forEach((existingObj) => {
+    mergedObj[existingObj.Key] = existingObj.Value;
+  });
+
+  newTags.forEach((newTag) => {
+    mergedObj[newTag.Key] = newTag.Value;
+  });
+
+  const mergedTags = Object.entries(mergedObj).map(([key, value]) => ({
+    Key: key,
+    Value: `${value}`,
+  }));
+
+  return mergedTags;
 };
 
 const uploadToS3 = async (dir, localpath, s3, bucketName) => {
@@ -139,22 +152,30 @@ export const copyBuildFolderToS3 = async ({
   profile,
   removeBucketFiles,
   host,
-  version = 'undefined',
-  versionMsg = 'undefined',
+  tagsFileLocation,
 }: {
   bucketName: string;
   buildDir: string;
   profile?: string;
   removeBucketFiles: boolean;
   host: string;
-  version: string;
-  versionMsg: string;
+  tagsFileLocation: string;
 }) => {
   console.log(`bucketName: ${bucketName}`);
   console.log(`local build folder: ${buildDir}`);
-  console.log(`using version for tags: ${version}`);
-  console.log(`using versionMsg for tags: ${versionMsg}`);
+  console.log(`using tags file: ${tagsFileLocation}`);
   console.log(`using host: ${host}`);
+
+  let newTags;
+  if (tagsFileLocation) {
+    const tags = JSON.parse(fs.readFileSync(tagsFileLocation).toString('utf-8'));
+    newTags = Object.entries(tags).map(([k, v]) => {
+      // the value has to be a string
+      return { Key: k, Value: `${v}` };
+    });
+    console.log('newTags');
+    console.dir(newTags);
+  }
 
   try {
     let s3;
@@ -188,11 +209,6 @@ export const copyBuildFolderToS3 = async ({
         Bucket: bucketName,
       })
       .promise();
-
-    const newTags = [
-      { Key: 'app_version', Value: version },
-      { Key: 'app_version_msg', Value: versionMsg },
-    ];
 
     const tagSet = updateExistingTags(existingBucketTags, newTags);
 

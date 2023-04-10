@@ -11,9 +11,8 @@ const main = async (): Promise<void> => {
   const buildPath = core.getInput('buildPath', { required: true });
   const apexDomain = core.getInput('apexDomain', { required: true });
   const appSubDomain = core.getInput('appSubDomain');
+  const tagsFileLocation = core.getInput('tagsFileLocation');
   const removeBucketFiles = core.getBooleanInput('removeBucketFiles');
-  const version = core.getInput('version');
-  const versionMsg = core.getInput('versionMsg');
 
   const bucketName = `${project}-${app}-${_.camelCase(stage)}`;
   const stageSubDomain = stage;
@@ -26,8 +25,7 @@ const main = async (): Promise<void> => {
     buildDir: buildPath,
     removeBucketFiles,
     host: fullDomain,
-    version,
-    versionMsg,
+    tagsFileLocation,
   };
   console.dir(options);
   await copyBuildFolderToS3(options);

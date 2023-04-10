@@ -14,8 +14,10 @@ const main = async () => {
     .option('-h, --host <host>', 'the website domain/host')
     .option('-r, --removeBucketFiles', 'deletes all existing files in the bucket')
     .option('-p, --profile <profileName>')
-    .option('-v, --version <version>', 'version of the app to be added to the AWS resources', 'undefined')
-    .option('-m, --versionMsg <msg>', 'version of the app to be added to the AWS resources', 'undefined');
+    .option(
+      '-t, --tagsLocation <version>',
+      'the location to the tags file to be set or updated. Format of the JSON: [{Key: string, Value: string}, ...]'
+    );
   program.parse();
   const options = program.opts();
 
