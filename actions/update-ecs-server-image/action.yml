@@ -16,5 +16,5 @@ inputs:
   tagsFileLocation:
     description: "The location of the tags, which should be updated or set"
 runs:
-  using: "node16"
+  using: "node20"
   main: "dist/index.js"
