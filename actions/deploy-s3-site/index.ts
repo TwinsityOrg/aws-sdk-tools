@@ -15,10 +15,8 @@ const main = async (): Promise<void> => {
   const removeBucketFiles = core.getBooleanInput('removeBucketFiles');
 
   const bucketName = `${project}-${app}-${_.camelCase(stage)}`;
-  const stageSubDomain = stage;
-  const fullDomain = appSubDomain
-    ? `${appSubDomain}.${stageSubDomain}.${apexDomain}`
-    : `${stageSubDomain}.${apexDomain}`;
+  const stageSubDomain = stage === 'prodpooled' ? '' : stage;
+  const fullDomain = [appSubDomain, stageSubDomain, apexDomain].filter(Boolean).join('.');
 
   const options = {
     bucketName,
